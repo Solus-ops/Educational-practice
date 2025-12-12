@@ -3,35 +3,35 @@ GO
 USE ObuvDB;
 GO
 CREATE TABLE Stg_Tovar (
-  Артикул NVARCHAR(50),
-  Наименование NVARCHAR(200),
-  Единица NVARCHAR(50),
-  Цена NVARCHAR(50),
-  Поставщик NVARCHAR(200),
-  Производитель NVARCHAR(200),
-  Категория NVARCHAR(200),
-  Скидка NVARCHAR(50),
-  Колво NVARCHAR(50),
-  Описание NVARCHAR(MAX),
-  Фото NVARCHAR(200)
+  ГЂГ°ГІГЁГЄГіГ« NVARCHAR(50),
+  ГЌГ ГЁГ¬ГҐГ­Г®ГўГ Г­ГЁГҐ NVARCHAR(200),
+  Г…Г¤ГЁГ­ГЁГ¶Г  NVARCHAR(50),
+  Г–ГҐГ­Г  NVARCHAR(50),
+  ГЏГ®Г±ГІГ ГўГ№ГЁГЄ NVARCHAR(200),
+  ГЏГ°Г®ГЁГ§ГўГ®Г¤ГЁГІГҐГ«Гј NVARCHAR(200),
+  ГЉГ ГІГҐГЈГ®Г°ГЁГї NVARCHAR(200),
+  Г‘ГЄГЁГ¤ГЄГ  NVARCHAR(50),
+  ГЉГ®Г«ГўГ® NVARCHAR(50),
+  ГЋГЇГЁГ±Г Г­ГЁГҐ NVARCHAR(MAX),
+  Г”Г®ГІГ® NVARCHAR(200)
 );
 
 CREATE TABLE Stg_Users (
-  Роль NVARCHAR(100),
-  ФИО NVARCHAR(200),
-  Логин NVARCHAR(100),
-  Пароль NVARCHAR(100)
+  ГђГ®Г«Гј NVARCHAR(100),
+  Г”Г€ГЋ NVARCHAR(200),
+  Г‹Г®ГЈГЁГ­ NVARCHAR(100),
+  ГЏГ Г°Г®Г«Гј NVARCHAR(100)
 );
 
 CREATE TABLE Stg_Orders (
-  Номер NVARCHAR(50),
-  Артикулы NVARCHAR(MAX),
-  ДатаЗаказа NVARCHAR(50),
-  ДатаДоставки NVARCHAR(50),
-  Пункт NVARCHAR(200),
-  Клиент NVARCHAR(200),
-  Код NVARCHAR(50),
-  Статус NVARCHAR(100)
+  ГЌГ®Г¬ГҐГ° NVARCHAR(50),
+  ГЂГ°ГІГЁГЄГіГ«Г» NVARCHAR(MAX),
+  Г„Г ГІГ Г‡Г ГЄГ Г§Г  NVARCHAR(50),
+  Г„Г ГІГ Г„Г®Г±ГІГ ГўГЄГЁ NVARCHAR(50),
+  ГЏГіГ­ГЄГІ NVARCHAR(200),
+  ГЉГ«ГЁГҐГ­ГІ NVARCHAR(200),
+  ГЉГ®Г¤ NVARCHAR(50),
+  Г‘ГІГ ГІГіГ± NVARCHAR(100)
 );
 
 CREATE TABLE Stg_PickupPoints (
@@ -104,63 +104,63 @@ CREATE TABLE OrderItems (
   FOREIGN KEY (ProductId) REFERENCES Products(Id)
 );
 GO
-INSERT INTO Units(Name) SELECT DISTINCT Единица FROM Stg_Tovar;
+INSERT INTO Units(Name) SELECT DISTINCT Г…Г¤ГЁГ­ГЁГ¶Г  FROM Stg_Tovar;
 
-INSERT INTO Suppliers(Name) SELECT DISTINCT Поставщик FROM Stg_Tovar;
+INSERT INTO Suppliers(Name) SELECT DISTINCT ГЏГ®Г±ГІГ ГўГ№ГЁГЄ FROM Stg_Tovar;
 
-INSERT INTO Manufacturers(Name) SELECT DISTINCT Производитель FROM Stg_Tovar;
+INSERT INTO Manufacturers(Name) SELECT DISTINCT ГЏГ°Г®ГЁГ§ГўГ®Г¤ГЁГІГҐГ«Гј FROM Stg_Tovar;
 
-INSERT INTO Categories(Name) SELECT DISTINCT Категория FROM Stg_Tovar;
+INSERT INTO Categories(Name) SELECT DISTINCT ГЉГ ГІГҐГЈГ®Г°ГЁГї FROM Stg_Tovar;
 
 INSERT INTO Promotions(DiscountPercent)
-SELECT DISTINCT TRY_CAST(Скидка AS INT) FROM Stg_Tovar;
+SELECT DISTINCT TRY_CAST(Г‘ГЄГЁГ¤ГЄГ  AS INT) FROM Stg_Tovar;
 
-INSERT INTO Roles(Name) SELECT DISTINCT Роль FROM Stg_Users;
+INSERT INTO Roles(Name) SELECT DISTINCT ГђГ®Г«Гј FROM Stg_Users;
 
-INSERT INTO OrderStatus(Name) SELECT DISTINCT Статус FROM Stg_Orders;
+INSERT INTO OrderStatus(Name) SELECT DISTINCT Г‘ГІГ ГІГіГ± FROM Stg_Orders;
 
 INSERT INTO PickupPoints(Address) SELECT DISTINCT Address FROM Stg_PickupPoints;
 
-INSERT INTO Clients(FullName) SELECT DISTINCT Клиент FROM Stg_Orders;
+INSERT INTO Clients(FullName) SELECT DISTINCT ГЉГ«ГЁГҐГ­ГІ FROM Stg_Orders;
 GO
 INSERT INTO Products (Article, Name, UnitId, Price, SupplierId, ManufacturerId, CategoryId, PromotionId, StockQty, Description, Photo)
 SELECT
-  Артикул,
-  Наименование,
+  ГЂГ°ГІГЁГЄГіГ«,
+  ГЌГ ГЁГ¬ГҐГ­Г®ГўГ Г­ГЁГҐ,
   u.Id,
-  TRY_CAST(Цена AS DECIMAL(18,2)),
+  TRY_CAST(Г–ГҐГ­Г  AS DECIMAL(18,2)),
   sup.Id,
   man.Id,
   cat.Id,
   prom.Id,
-  TRY_CAST(Колво AS INT),
-  Описание,
-  Фото
+  TRY_CAST(ГЉГ®Г«ГўГ® AS INT),
+  ГЋГЇГЁГ±Г Г­ГЁГҐ,
+  Г”Г®ГІГ®
 FROM Stg_Tovar s
-JOIN Units u ON u.Name = s.Единица
-JOIN Suppliers sup ON sup.Name = s.Поставщик
-JOIN Manufacturers man ON man.Name = s.Производитель
-JOIN Categories cat ON cat.Name = s.Категория
-JOIN Promotions prom ON prom.DiscountPercent = TRY_CAST(s.Скидка AS INT);
+JOIN Units u ON u.Name = s.Г…Г¤ГЁГ­ГЁГ¶Г 
+JOIN Suppliers sup ON sup.Name = s.ГЏГ®Г±ГІГ ГўГ№ГЁГЄ
+JOIN Manufacturers man ON man.Name = s.ГЏГ°Г®ГЁГ§ГўГ®Г¤ГЁГІГҐГ«Гј
+JOIN Categories cat ON cat.Name = s.ГЉГ ГІГҐГЈГ®Г°ГЁГї
+JOIN Promotions prom ON prom.DiscountPercent = TRY_CAST(s.Г‘ГЄГЁГ¤ГЄГ  AS INT);
 GO
 INSERT INTO Users (FullName, Login, Password, RoleId)
-SELECT s.ФИО, s.Логин, s.Пароль, r.Id
+SELECT s.Г”Г€ГЋ, s.Г‹Г®ГЈГЁГ­, s.ГЏГ Г°Г®Г«Гј, r.Id
 FROM Stg_Users s
-JOIN Roles r ON r.Name = s.Роль;
+JOIN Roles r ON r.Name = s.ГђГ®Г«Гј;
 GO
 INSERT INTO Orders (OrderNumber, OrderDate, DeliveryDate, PickupPointId, ClientId, PickupCode, StatusId)
 SELECT 
-  Номер,
-  TRY_CONVERT(date, ДатаЗаказа, 104),
-  TRY_CONVERT(date, ДатаДоставки, 104),
+  ГЌГ®Г¬ГҐГ°,
+  TRY_CONVERT(date, Г„Г ГІГ Г‡Г ГЄГ Г§Г , 104),
+  TRY_CONVERT(date, Г„Г ГІГ Г„Г®Г±ГІГ ГўГЄГЁ, 104),
   pp.Id,
   cl.Id,
-  Код,
+  ГЉГ®Г¤,
   st.Id
 FROM Stg_Orders s
-JOIN PickupPoints pp ON s.Пункт = pp.Id
-JOIN Clients cl ON cl.FullName = s.Клиент
-JOIN OrderStatus st ON st.Name = s.Статус;
+JOIN PickupPoints pp ON s.ГЏГіГ­ГЄГІ = pp.Id
+JOIN Clients cl ON cl.FullName = s.ГЉГ«ГЁГҐГ­ГІ
+JOIN OrderStatus st ON st.Name = s.Г‘ГІГ ГІГіГ±;
 GO
 IF OBJECT_ID('tempdb..#RawOrderItems') IS NOT NULL DROP TABLE #RawOrderItems;
 
@@ -175,9 +175,9 @@ DECLARE
     @Str NVARCHAR(MAX);
 
 DECLARE order_cursor CURSOR FOR
-SELECT o.Id, s.Артикулы
+SELECT o.Id, s.ГЂГ°ГІГЁГЄГіГ«Г»
 FROM Orders o
-JOIN Stg_Orders s ON o.OrderNumber = s.Номер;
+JOIN Stg_Orders s ON o.OrderNumber = s.ГЌГ®Г¬ГҐГ°;
 
 OPEN order_cursor;
 FETCH NEXT FROM order_cursor INTO @OrderId, @Str;
